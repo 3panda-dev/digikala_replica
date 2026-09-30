@@ -1,7 +1,7 @@
 from django.db import models
 
 class Cart(models.Model):
-    user = models.OneToOneField("profiles.Profiles",  on_delete=models.CASCADE)
+    profile = models.OneToOneField("profiles.Profiles",  on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
