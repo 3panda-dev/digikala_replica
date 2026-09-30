@@ -29,8 +29,6 @@ class User(AbstractUser, PermissionsMixin):
     objects = UserManager()
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = []
-    pass
+    
 
-# Create your models here.
 
-# Create your models here.
