@@ -1,12 +1,5 @@
 from django.db import models
 
-# (ali) seller model here
-class Seller(models.Model):
-    pass
-
-
-#store model here
-
 class Store(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
