@@ -1,6 +1,6 @@
 from django.db import models
 
-#seller model here
+# (ali) seller model here
 class Seller(models.Model):
     pass
 
