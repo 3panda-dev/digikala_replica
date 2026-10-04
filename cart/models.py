@@ -20,4 +20,8 @@ class CartItem(models.Model):
         return f"{self.quantity} x {self.product.name} in Cart {self.cart.id}"
 
     def add_item(self):
-        pass
+        if self.product.stock <= self.quantity:
+            raise ValueError(f"not enough {self.product.name} avalible")
+        else:
+            self.quantity += 1
+            self.save()
