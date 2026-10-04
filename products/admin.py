@@ -19,8 +19,11 @@ class ProductAdmin(admin.ModelAdmin):
         ('INFO', {
             'fields':('name', 'category', 'description', 'views_count', 'slug', 'status')
         }),
-        ('PRICE', {
-            'fields': ('price',)
+        ('PRICE & STOCK', {
+            'fields': ('price', 'stock')
+        }),
+        ('product image', {
+            'fields': ('image',)
         }),
     )
 
