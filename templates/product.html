@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Products - DigiKala
+{% endblock %}
+
+{% block content %}
+    <h1>Products</h1>
+
+    {% if product %}
+        <ul>
+            {% for p in product %}
+                <li>
+                    <h2>{{ p.name }}</h2>
+                    <p>{{ p.description }}</p>
+                    <p>Price: {{ p.price }}</p>
+                    <a href="{% url 'product_detail' p.id %}">View Product</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No products available.</p>
+    {% endif %}
+
+{% endblock %}

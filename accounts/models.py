@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager, Permission
 class UserManager(BaseUserManager):
     def create_user(self, phone_number, password=None, **extra_fields):
         first_name = extra_fields.get('first_name')
-        last_name = extra_fields
+        last_name = extra_fields.get('last_name')
 
         if not phone_number:
             raise ValueError("The Phone number must be set")
