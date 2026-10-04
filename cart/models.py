@@ -1,19 +1,27 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 class Cart(models.Model):
-    profile = models.OneToOneField("profiles.Profiles",  on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    profile = models.OneToOneField("profiles.CustomerProfile",  on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("created at"))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("updated at"))
 
     def __str__(self):
         return f"Cart {self.id} for {self.user.name}"
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="items")
-    product = models.ForeignKey("products.Products", on_delete=models.CASCADE)
+    product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name} in Cart {self.cart.id}"
+
+    def add_item(self):
+        if self.product.stock <= self.quantity:
+            raise ValueError(f"not enough {self.product.name} avalible")
+        else:
+            self.quantity += 1
+            self.save()
