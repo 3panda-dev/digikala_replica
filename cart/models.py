@@ -18,3 +18,6 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name} in Cart {self.cart.id}"
+
+    def add_item(self):
+        pass
