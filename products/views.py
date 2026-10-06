@@ -24,6 +24,12 @@ def products(request):
         "products": products,
     })
 
+def product_detail(request, slug):
+    product = Product.objects.get(slug=slug)
+    product.viewed()
+    return render(request, "product_detail.html", {
+        "product": product,
+    })
 
 
 # Create your views here.

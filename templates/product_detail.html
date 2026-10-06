@@ -1,0 +1,59 @@
+
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} | DijiKala{% endblock %}
+
+{% block content %}
+
+<div class="product-detail">
+
+    <!-- Product Image -->
+    <div class="product-detail-image">
+        {% if product.image %}
+            <img
+                src="{{ product.image.url }}"
+                alt="{{ product.name }}"
+            >
+        {% else %}
+            <div class="product-no-image">
+                No image available
+            </div>
+        {% endif %}
+    </div>
+
+
+    <!-- Product Information -->
+    <div class="product-detail-info">
+
+        <h1>{{ product.name }}</h1>
+
+        <div class="product-meta">
+            <span>👁️ {{ product.views_count }} views</span>
+            <span>📁 {{ product.category }}</span>
+        </div>
+
+        <div class="product-price">
+            ${{ product.price }}
+        </div>
+
+        <div class="product-description">
+            <h3>Description</h3>
+            <p>{{ product.description }}</p>
+        </div>
+
+        {% if user.is_authenticated %}
+            <a href="" class="btn product-buy-btn">
+                🛒 Add to Cart
+            </a>
+        {% else %}
+            <p>
+                <a href="">Login</a> to add this product to your cart.
+            </p>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
+
