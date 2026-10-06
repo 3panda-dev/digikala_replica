@@ -33,6 +33,8 @@ class Product(BaseModel):
     description = models.TextField(verbose_name='توضیحات')
     price = models.PositiveIntegerField()
     views_count = models.PositiveIntegerField(default=0, verbose_name='تعداد بازدید')
+    stock = models.PositiveIntegerField(default=0, verbose_name='موجودی')
+    image = models.ImageField(upload_to='products-image/', blank=True, null=True, verbose_name='عکس پروفایل')
 
     class Status(models.TextChoices):
         DRAFT = "draft", _("پیش نویس")

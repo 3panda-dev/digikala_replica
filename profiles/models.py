@@ -9,7 +9,7 @@ class CustomerProfile(models.Model):
     full_name = models.CharField(max_length=300, verbose_name='نام کامل')
     location = models.CharField(max_length=1000, blank=True, null=True, verbose_name='آدرس')
     postal_code = models.CharField(max_length=10, blank=True, null=True, verbose_name='کد پستی')
-    avatar = models.ImageField(upload_to='profile-avatars/', blank=True, null=True, verbose_name='عکس پروفایل')
+    avatar = models.ImageField(upload_to='profile-customer-avatars/', blank=True, null=True, verbose_name='عکس پروفایل')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -26,6 +26,8 @@ class sellerprofile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     national_id = models.CharField(max_length=10, unique=True, verbose_name='کد ملی')
     shaba_number = models.CharField(max_length=26, blank=True, null=True, verbose_name='شماره شبا')
+    avatar = models.ImageField(upload_to='profile-seller-avatars/', blank=True, null=True, verbose_name='عکس پروفایل')
+
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
