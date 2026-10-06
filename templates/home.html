@@ -6,48 +6,4 @@
 
 {% block content %}
 
-<section class="hero">
-    <h1>Welcome to DigiKala</h1>
-    <p>Find the products you are looking for.</p>
-</section>
-
-
-<section class="most-viewed">
-
-    <h2>Most Viewed Product</h2>
-
-    {% if most_viewed_product %}
-
-        <div class="product-card">
-
-            <h3>
-                {{ most_viewed_product.name }}
-            </h3>
-
-            <p>
-                {{ most_viewed_product.description }}
-            </p>
-
-            <p>
-                Price: {{ most_viewed_product.price }}
-            </p>
-
-            <p>
-                Views: {{ most_viewed_product.views }}
-            </p>
-
-            <a href="">
-                View Product
-            </a>
-
-        </div>
-
-    {% else %}
-
-        <p>No products available yet.</p>
-
-    {% endif %}
-
-</section>
-
 {% endblock %}
