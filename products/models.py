@@ -35,7 +35,8 @@ class Product(BaseModel):
     views_count = models.PositiveIntegerField(default=0, verbose_name='تعداد بازدید')
     stock = models.PositiveIntegerField(default=0, verbose_name='موجودی')
     image = models.ImageField(upload_to='products-image/', blank=True, null=True, verbose_name='عکس پروفایل')
-    store = models.ForeignKey("store.Store", on_delete=models.CASCADE, related_name='store')
+    
+
 
     class Status(models.TextChoices):
         DRAFT = "draft", _("پیش نویس")
@@ -46,6 +47,10 @@ class Product(BaseModel):
 
     def __str__(self):
         return f"name: {self.name} price:{self.price}"
+
+    def viewed(self):
+        self.views_count += 1
+        self.save(update_fields=['views_count'])
 
     
 
