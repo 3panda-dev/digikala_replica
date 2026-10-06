@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 class UserManager(BaseUserManager):
     def create_user(self, phone_number, password=None, **extra_fields):
@@ -28,7 +28,7 @@ class UserManager(BaseUserManager):
 
     
 
-class User(AbstractUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(max_length=11, unique=True, verbose_name='شماره تلفن')
     first_name = models.CharField(max_length=30, verbose_name='نام')
     last_name = models.CharField(max_length=40, verbose_name='نام خانوادگی')

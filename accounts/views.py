@@ -14,7 +14,7 @@ class UserRegisterView(CreateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         login(self.request, self.object)
-        messages.success(self.request, f'{self.object.first_name} سلام')
+        messages.success(self.request, f'سلام {self.object.first_name}')
         return response
     def form_invalid(self, form):
         messages.error(self.request, 'ثبت نام انجام نشد')
