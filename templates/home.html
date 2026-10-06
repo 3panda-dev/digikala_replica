@@ -1,9 +1,57 @@
-{% extends "base.html" %}
 
-{% block title %}
-    Home - DigiKala
-{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Home | DijiKala{% endblock %}
 
 {% block content %}
 
+<div class="home-header">
+    <h2>🛒 Latest Products</h2>
+
+    <div class="home-links">
+        <a href="" class="btn">All Products</a>
+        <a href="" class="btn">All Stores</a>
+        <a href="" class="btn">All Categories</a>
+    </div>
+</div>
+
+<div class="card-grid">
+    {% for product in products|slice:":10" %}
+        <div class="card">
+
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <div class="no-image">No image</div>
+            {% endif %}
+
+            <h3>{{ product.name }}</h3>
+
+            <p>{{ product.description|truncatewords:12 }}</p>
+
+            <p>
+                <strong>${{ product.price }}</strong>
+            </p>
+
+            {% if user.is_authenticated %}
+                <a href="" class="btn">Add to Cart</a>
+            {% else %}
+                <p>
+                    <a href="">Login to Buy</a>
+                </p>
+            {% endif %}
+
+        </div>
+
+    {% empty %}
+        <p>No products yet!</p>
+    {% endfor %}
+</div>
+
+{% if user.is_authenticated %}
+    <a href="" class="floating-cart">
+        🛒 Cart
+    </a>
+{% endif %}
+
 {% endblock %}
+
