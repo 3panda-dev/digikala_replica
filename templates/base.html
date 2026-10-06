@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,11 +9,21 @@
 </head>
 <body>
 
+    {% if messages %}
+    <div class="toast-container">
+      {% for message in messages %}
+        <div class="toast-box {{ message.tags }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
     <!-- Navbar -->
     <nav class="navbar">
         <div class="container">
             <div class="nav-left">
-                <a href="/" class="logo">🛍️ DijiKala</a>
+                <a href="{% url 'home' %}" class="logo">🛍️ DijiKala</a>
             </div>
             <div class="nav-right">
                 {% if user.is_authenticated %}
