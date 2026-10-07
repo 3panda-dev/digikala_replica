@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Products | DijiKala{% endblock %}
@@ -13,6 +12,7 @@
 
         <!-- Search -->
         <form method="GET" class="search-form">
+
             <input
                 type="text"
                 name="search"
@@ -20,10 +20,81 @@
                 value="{{ request.GET.search|default:'' }}"
             >
 
+            <!-- Keep selected category -->
+            {% if request.GET.category %}
+                <input
+                    type="hidden"
+                    name="category"
+                    value="{{ request.GET.category }}"
+                >
+            {% endif %}
+
+            <!-- Keep selected sort -->
+            {% if request.GET.sort %}
+                <input
+                    type="hidden"
+                    name="sort"
+                    value="{{ request.GET.sort }}"
+                >
+            {% endif %}
+
             <button type="submit" class="btn">
                 🔍 Search
             </button>
+
         </form>
+
+
+        <!-- Category -->
+        <form method="GET" class="category-form">
+
+            <!-- Keep search -->
+            {% if request.GET.search %}
+                <input
+                    type="hidden"
+                    name="search"
+                    value="{{ request.GET.search }}"
+                >
+            {% endif %}
+
+            <!-- Keep sort -->
+            {% if request.GET.sort %}
+                <input
+                    type="hidden"
+                    name="sort"
+                    value="{{ request.GET.sort }}"
+                >
+            {% endif %}
+
+            <label for="category">Category:</label>
+
+            <select
+                name="category"
+                id="category"
+                onchange="this.form.submit()"
+            >
+
+                <option value="">
+                    All Categories
+                </option>
+
+                {% for category in categories %}
+
+                    <option
+                        value="{{ category.name }}"
+                        {% if request.GET.category == category.name%}
+                            selected
+                        {% endif %}
+                    >
+                        {{ category.name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </form>
+
 
         <!-- Sorting -->
         <form method="GET" class="sort-form">
@@ -36,11 +107,24 @@
                 >
             {% endif %}
 
+            {% if request.GET.category %}
+                <input
+                    type="hidden"
+                    name="category"
+                    value="{{ request.GET.category }}"
+                >
+            {% endif %}
+
             <label for="sort">Sort by:</label>
 
-            <select name="sort" id="sort" onchange="this.form.submit()">
+            <select
+                name="sort"
+                id="sort"
+                onchange="this.form.submit()"
+            >
 
-                <option value="newest"
+                <option
+                    value="newest"
                     {% if request.GET.sort == "newest" or not request.GET.sort %}
                         selected
                     {% endif %}
@@ -48,7 +132,8 @@
                     Newest
                 </option>
 
-                <option value="oldest"
+                <option
+                    value="oldest"
                     {% if request.GET.sort == "oldest" %}
                         selected
                     {% endif %}
@@ -56,7 +141,8 @@
                     Oldest
                 </option>
 
-                <option value="most_viewed"
+                <option
+                    value="most_viewed"
                     {% if request.GET.sort == "most_viewed" %}
                         selected
                     {% endif %}
@@ -79,8 +165,10 @@
 
         <div class="card">
 
-            <!-- Product Link -->
-            <a href="{% url 'product_detail' slug=product.slug %}" class="product-card-link">
+            <a
+                href="{% url 'product_detail' slug=product.slug %}"
+                class="product-card-link"
+            >
 
                 {% if product.image %}
                     <img
@@ -105,8 +193,10 @@
 
             </a>
 
-            <!-- View Product Button -->
-            <a href="{% url 'product_detail' slug=product.slug %}" class="btn">
+            <a
+                href="{% url 'product_detail' slug=product.slug %}"
+                class="btn"
+            >
                 View Product
             </a>
 
@@ -121,5 +211,3 @@
 </div>
 
 {% endblock %}
-
-

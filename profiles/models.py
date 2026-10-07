@@ -29,6 +29,7 @@ class sellerprofile(models.Model):
     avatar = models.ImageField(upload_to='profile-seller-avatars/', blank=True, null=True, verbose_name='عکس پروفایل')
 
 
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
