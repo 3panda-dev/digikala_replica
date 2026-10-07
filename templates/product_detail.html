@@ -29,7 +29,10 @@
 
         <div class="product-meta">
             <span>👁️ {{ product.views_count }} views</span>
-            <span>📁 {{ product.category.name }}</span>
+            {% for category in product.category.all %}
+                <span>📁 {{ category.name }}</span>
+            {% endfor %}
+            
         </div>
 
         <div class="product-price">
