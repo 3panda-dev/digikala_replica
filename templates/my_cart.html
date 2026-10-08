@@ -35,8 +35,7 @@
             <div class="quantity-controls">
 
                 <!-- Minus -->
-                <form action="{% url 'remove_quantity' product_id=item.product.id %}"
-                      method="POST">
+                <form action="{% url 'remove_quantity' product_id=item.product.id %}" method="POST">
                     {% csrf_token %}
                     <button type="submit" class="quantity-btn">−</button>
                 </form>
@@ -45,8 +44,7 @@
                 <span class="quantity-number">{{ item.quantity }}</span>
 
                 <!-- Plus -->
-                <form action="{% url 'add_quantity' product_id=item.product.id %}"
-                      method="POST">
+                <form action="{% url 'add_quantity' product_id=item.product.id %}" method="POST">
                     {% csrf_token %}
                     <button type="submit" class="quantity-btn">+</button>
                 </form>
@@ -55,16 +53,15 @@
 
         </div>
 
-        <!-- Total -->
+        <!-- Item total -->
         <div class="cart-item-total">
             <span>Total</span>
-            <strong>${{ item.get_total_price }}</strong>
+            <strong>${{ item.update_product_total }}</strong>
         </div>
 
         <!-- Remove -->
         <div class="cart-remove">
-            <form action="{% url 'remove_from_cart' product_id=item.product.id %}"
-                  method="POST">
+            <form action="{% url 'remove_from_cart' product_id=item.product.id %}" method="POST">
                 {% csrf_token %}
                 <button type="submit" class="remove-btn">
                     Remove
@@ -81,6 +78,19 @@
         </div>
 
     {% endfor %}
+
+
+    {% if cart.items.all %}
+        <!-- Cart summary -->
+        <div class="cart-summary">
+
+            <div class="grand-total">
+                <span>Grand Total</span>
+                <strong>${{cart_total}}</strong>
+            </div>
+
+        </div>
+    {% endif %}
 
 </div>
 

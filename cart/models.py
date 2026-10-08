@@ -6,7 +6,7 @@ class Cart(models.Model):
     profile = models.OneToOneField("profiles.CustomerProfile",  on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("updated at"))
-    total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, verbose_name=_("total"))
+    cart_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, verbose_name=_("total")) #not used for now
 
     def __str__(self):
         return f"Cart {self.id} for {self.profile.full_name}"
@@ -37,5 +37,7 @@ class CartItem(models.Model):
             self.delete()
 
     @property
-    def get_total_price(self):
+    def update_product_total(self):
         return self.product.price * self.quantity
+
+

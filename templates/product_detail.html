@@ -64,8 +64,14 @@
 
         {% if user.is_authenticated %}
 
+            <form method="POST" action="{% url 'add_to_cart' product_id=product.id%}">
+                {% csrf_token %}
+                <button type="submit" class="btn product-buy-btn">🛒 Add to Cart</button>
+
+
+            </form>
             <a
-                href=""
+                href="{% url 'add_to_cart' product_id=product.id%}"
                 class="btn product-buy-btn"
             >
                 🛒 Add to Cart

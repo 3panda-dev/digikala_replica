@@ -8,10 +8,14 @@ from django.views import View
 from django.shortcuts import get_object_or_404, redirect
 
 
+
 @login_required
 def my_cart(request):
     cart = Cart.objects.get(profile=request.user.customerprofile)
-    return render(request, 'my_cart.html', {'cart': cart})
+    total = 0
+    for item in cart.items.all():
+        total += item.product.price * item.quantity
+    return render(request, 'my_cart.html', {'cart': cart, "cart_total": total})
 
 
 
@@ -25,7 +29,7 @@ class AddToCart(LoginRequiredMixin, View):
             messages.info(request, "Product already in cart.")
 
         else:
-            
+
             try:
                 CartItem.objects.create(cart=cart, product=product)
                 messages.success(request, "product added successfully.")
@@ -58,6 +62,7 @@ class AddQuantity(LoginRequiredMixin, View):
         product = get_object_or_404(Product, id=product_id)
         cart = Cart.objects.get(profile=request.user.customerprofile)
         cart_item = cart.items.get(product=product)
+
         try:
             cart_item.add_item()
             messages.success(request, "Quantity increased successfully.")
