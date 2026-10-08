@@ -1,11 +1,12 @@
 
-<<<<<<< HEAD
 from django.db import models 
 from django.conf import settings 
 from django.utils.translation import gettext_lazy as _ 
 from django.db.models.signals import post_save 
 from django.dispatch import receiver 
-=======
+
+from cart.models import Cart
+ 
 class CustomerProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=300, verbose_name='نام کامل')
@@ -13,17 +14,8 @@ class CustomerProfile(models.Model):
     postal_code = models.CharField(max_length=10, blank=True, null=True, verbose_name='کد پستی')
     avatar = models.ImageField(upload_to='profile-customer-avatars/', blank=True, null=True, verbose_name='عکس پروفایل')
     wallet = models.DecimalField(max_digits=12, decimal_places=0,default=0, verbose_name='کیف پول')
->>>>>>> 355baf5f64c02614cbfab1b379dc4ecff38422f5
 
-from cart.models import Cart
- 
-class CustomerProfile(models.Model): 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) 
-    full_name = models.CharField(max_length=300, verbose_name='نام کامل') 
-    location = models.CharField(max_length=1000, blank=True, null=True, verbose_name='آدرس') 
-    postal_code = models.CharField(max_length=10, blank=True, null=True, verbose_name='کد پستی') 
-    avatar = models.ImageField(upload_to='profile-customer-avatars/', blank=True, null=True, verbose_name='عکس پروفایل') 
- 
+    
     created_at = models.DateTimeField(auto_now_add=True) 
     updated_at = models.DateTimeField(auto_now=True) 
  
