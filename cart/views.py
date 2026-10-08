@@ -24,13 +24,56 @@ class AddToCart(LoginRequiredMixin, View):
         if cart.items.filter(product=product).exists():
             messages.info(request, "Product already in cart.")
 
-        elif cart.items.filter(product=product).exists():
+        else:
+            
             try:
-                CartItem.objects.create(cart=cart, product=product, quantity=1)
-                messages.success(request, "Quantity added successfully.")
+                CartItem.objects.create(cart=cart, product=product)
+                messages.success(request, "product added successfully.")
+
             except ValueError as e:
                 messages.error(request, str(e))
-        else:
-            messages.success(request, "Product added to cart.")
 
         return redirect('my_cart')
+
+
+class RemoveFromCart(LoginRequiredMixin, View):
+
+    def post(self, request, product_id):
+        product = get_object_or_404(Product, id=product_id)
+        cart = Cart.objects.get(profile=request.user.customerprofile)
+
+        if cart.items.filter(product=product).exists():
+            cart_item = cart.items.get(product=product)
+            cart_item.delete()
+            messages.success(request, "Product removed from cart.")
+        else:
+            messages.error(request, "Product not found in cart.")
+
+        return redirect('my_cart')
+
+
+class AddQuantity(LoginRequiredMixin, View):
+
+    def post(self, request, product_id):
+        product = get_object_or_404(Product, id=product_id)
+        cart = Cart.objects.get(profile=request.user.customerprofile)
+        cart_item = cart.items.get(product=product)
+        try:
+            cart_item.add_item()
+            messages.success(request, "Quantity increased successfully.")
+            
+        except ValueError as e:
+            messages.error(request, str(e))
+
+        return redirect('my_cart')
+
+class RemoveQuantity(LoginRequiredMixin, View):
+
+    def post(self, request, product_id):
+        product = get_object_or_404(Product, id=product_id)
+        cart = Cart.objects.get(profile=request.user.customerprofile)
+        cart_item = cart.items.get(product=product)
+        cart_item.remove_quantity()
+
+        return redirect('my_cart')
+

@@ -34,7 +34,7 @@ class Product(BaseModel):
     price = models.PositiveIntegerField()
     views_count = models.PositiveIntegerField(default=0, verbose_name='تعداد بازدید')
     stock = models.PositiveIntegerField(default=0, verbose_name='موجودی')
-    image = models.ImageField(upload_to='products-image/', blank=True, null=True, verbose_name='عکس پروفایل')
+    image = models.ImageField(upload_to='products-image/', blank=True, null=True, verbose_name='عکس پروفایل', default='media/products-image/default.jpg')
     
 
 

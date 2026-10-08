@@ -1,15 +1,87 @@
 {% extends "base.html" %}
 
+{% block title %}My Cart | DijiKala{% endblock %}
+
 {% block content %}
-    <h1>My Cart</h1>
-    {% if cart.items.all %}
-        <ul>
-            {% for item in cart.items.all %}
-                <li>{{ item.product.name }} - Quantity: {{ item.quantity }}</li>
-                <button type="button" href="">Add Quantity</button>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Your cart is empty.</p>
-    {% endif %}
+
+<div class="cart-container">
+
+    <h1 class="cart-title">My Cart 🛒</h1>
+
+    {% for item in cart.items.all %}
+
+    <div class="cart-item">
+
+        <!-- Product image -->
+        <div class="cart-product-image">
+            {% if item.product.image %}
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+            {% else %}
+                <div class="no-image">No Image</div>
+            {% endif %}
+        </div>
+
+        <!-- Product information -->
+        <div class="cart-product-info">
+            <h2>{{ item.product.name }}</h2>
+            <p class="product-price">${{ item.product.price }}</p>
+        </div>
+
+        <!-- Quantity -->
+        <div class="cart-quantity">
+
+            <span class="quantity-label">Quantity</span>
+
+            <div class="quantity-controls">
+
+                <!-- Minus -->
+                <form action="{% url 'remove_quantity' product_id=item.product.id %}"
+                      method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="quantity-btn">−</button>
+                </form>
+
+                <!-- Current quantity -->
+                <span class="quantity-number">{{ item.quantity }}</span>
+
+                <!-- Plus -->
+                <form action="{% url 'add_quantity' product_id=item.product.id %}"
+                      method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="quantity-btn">+</button>
+                </form>
+
+            </div>
+
+        </div>
+
+        <!-- Total -->
+        <div class="cart-item-total">
+            <span>Total</span>
+            <strong>${{ item.get_total_price }}</strong>
+        </div>
+
+        <!-- Remove -->
+        <div class="cart-remove">
+            <form action="{% url 'remove_from_cart' product_id=item.product.id %}"
+                  method="POST">
+                {% csrf_token %}
+                <button type="submit" class="remove-btn">
+                    Remove
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+    {% empty %}
+
+        <div class="empty-cart">
+            <h2>Your cart is empty</h2>
+        </div>
+
+    {% endfor %}
+
+</div>
+
 {% endblock %}

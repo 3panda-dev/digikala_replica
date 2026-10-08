@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.contrib import messages
 
 class Cart(models.Model):
     profile = models.OneToOneField("profiles.CustomerProfile",  on_delete=models.CASCADE)
@@ -23,7 +24,18 @@ class CartItem(models.Model):
 
     def add_item(self):
         if self.product.stock <= self.quantity:
-            raise ValueError(f"not enough {self.product.name} avalible")
+            raise ValueError("Cannot add more items than available in stock.")
         else:
             self.quantity += 1
             self.save()
+
+    def remove_quantity(self):
+        if self.quantity > 1:
+            self.quantity -= 1
+            self.save()
+        else:
+            self.delete()
+
+    @property
+    def get_total_price(self):
+        return self.product.price * self.quantity
