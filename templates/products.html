@@ -1,26 +1,39 @@
+
 {% extends 'base.html' %}
 
 {% block title %}Products | DijiKala{% endblock %}
 
 {% block content %}
 
-<div class="products-header">
+<div class="products-page">
 
-    <h2>All Products</h2>
+    <!-- Header -->
+    <div class="products-header">
+        <div>
+            <span class="products-eyebrow">DIJIKALA STORE</span>
+            <h1>All Products</h1>
+            <p>Discover our collection of products</p>
+        </div>
+    </div>
 
-    <div class="products-tools">
+
+    <!-- Filters -->
+    <div class="products-toolbar">
 
         <!-- Search -->
         <form method="GET" class="search-form">
 
-            <input
-                type="text"
-                name="search"
-                placeholder="Search products..."
-                value="{{ request.GET.search|default:'' }}"
-            >
+            <div class="search-box">
+                <span>🔍</span>
 
-            <!-- Keep selected category -->
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Search products..."
+                    value="{{ request.GET.search|default:'' }}"
+                >
+            </div>
+
             {% if request.GET.category %}
                 <input
                     type="hidden"
@@ -29,7 +42,6 @@
                 >
             {% endif %}
 
-            <!-- Keep selected sort -->
             {% if request.GET.sort %}
                 <input
                     type="hidden"
@@ -38,176 +50,232 @@
                 >
             {% endif %}
 
-            <button type="submit" class="btn">
-                🔍 Search
+            <button type="submit" class="search-button">
+                Search
             </button>
 
         </form>
 
 
-        <!-- Category -->
-        <form method="GET" class="category-form">
+        <div class="filter-group">
 
-            <!-- Keep search -->
-            {% if request.GET.search %}
-                <input
-                    type="hidden"
-                    name="search"
-                    value="{{ request.GET.search }}"
+            <!-- Category -->
+            <form method="GET" class="filter-form">
+
+                {% if request.GET.search %}
+                    <input
+                        type="hidden"
+                        name="search"
+                        value="{{ request.GET.search }}"
+                    >
+                {% endif %}
+
+                {% if request.GET.sort %}
+                    <input
+                        type="hidden"
+                        name="sort"
+                        value="{{ request.GET.sort }}"
+                    >
+                {% endif %}
+
+                <label for="category">Category</label>
+
+                <select
+                    name="category"
+                    id="category"
+                    onchange="this.form.submit()"
                 >
-            {% endif %}
+                    <option value="">All Categories</option>
 
-            <!-- Keep sort -->
-            {% if request.GET.sort %}
-                <input
-                    type="hidden"
+                    {% for category in categories %}
+                        <option
+                            value="{{ category.name }}"
+                            {% if request.GET.category == category.name %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ category.name }}
+                        </option>
+                    {% endfor %}
+
+                </select>
+
+            </form>
+
+
+            <!-- Sorting -->
+            <form method="GET" class="filter-form">
+
+                {% if request.GET.search %}
+                    <input
+                        type="hidden"
+                        name="search"
+                        value="{{ request.GET.search }}"
+                    >
+                {% endif %}
+
+                {% if request.GET.category %}
+                    <input
+                        type="hidden"
+                        name="category"
+                        value="{{ request.GET.category }}"
+                    >
+                {% endif %}
+
+                <label for="sort">Sort</label>
+
+                <select
                     name="sort"
-                    value="{{ request.GET.sort }}"
+                    id="sort"
+                    onchange="this.form.submit()"
                 >
-            {% endif %}
-
-            <label for="category">Category:</label>
-
-            <select
-                name="category"
-                id="category"
-                onchange="this.form.submit()"
-            >
-
-                <option value="">
-                    All Categories
-                </option>
-
-                {% for category in categories %}
 
                     <option
-                        value="{{ category.name }}"
-                        {% if request.GET.category == category.name%}
+                        value="newest"
+                        {% if request.GET.sort == "newest" or not request.GET.sort %}
                             selected
                         {% endif %}
                     >
-                        {{ category.name }}
+                        Newest
                     </option>
 
-                {% endfor %}
-
-            </select>
-
-        </form>
-
-
-        <!-- Sorting -->
-        <form method="GET" class="sort-form">
-
-            {% if request.GET.search %}
-                <input
-                    type="hidden"
-                    name="search"
-                    value="{{ request.GET.search }}"
-                >
-            {% endif %}
-
-            {% if request.GET.category %}
-                <input
-                    type="hidden"
-                    name="category"
-                    value="{{ request.GET.category }}"
-                >
-            {% endif %}
-
-            <label for="sort">Sort by:</label>
-
-            <select
-                name="sort"
-                id="sort"
-                onchange="this.form.submit()"
-            >
-
-                <option
-                    value="newest"
-                    {% if request.GET.sort == "newest" or not request.GET.sort %}
-                        selected
-                    {% endif %}
-                >
-                    Newest
-                </option>
-
-                <option
-                    value="oldest"
-                    {% if request.GET.sort == "oldest" %}
-                        selected
-                    {% endif %}
-                >
-                    Oldest
-                </option>
-
-                <option
-                    value="most_viewed"
-                    {% if request.GET.sort == "most_viewed" %}
-                        selected
-                    {% endif %}
-                >
-                    Most Viewed
-                </option>
-
-            </select>
-
-        </form>
-
-    </div>
-</div>
-
-
-<!-- Products -->
-<div class="card-grid">
-
-    {% for product in products %}
-
-        <div class="card">
-
-            <a
-                href="{% url 'product_detail' slug=product.slug %}"
-                class="product-card-link"
-            >
-
-                {% if product.image %}
-                    <img
-                        src="{{ product.image.url }}"
-                        alt="{{ product.name }}"
+                    <option
+                        value="oldest"
+                        {% if request.GET.sort == "oldest" %}
+                            selected
+                        {% endif %}
                     >
-                {% else %}
-                    <div class="no-image">
-                        No image
-                    </div>
-                {% endif %}
+                        Oldest
+                    </option>
 
-                <h3>{{ product.name }}</h3>
+                    <option
+                        value="most_viewed"
+                        {% if request.GET.sort == "most_viewed" %}
+                            selected
+                        {% endif %}
+                    >
+                        Most Viewed
+                    </option>
 
-                <p>
-                    {{ product.description|truncatewords:12 }}
-                </p>
+                </select>
 
-                <p>
-                    <strong>${{ product.price }}</strong>
-                </p>
-
-            </a>
-
-            <a
-                href="{% url 'product_detail' slug=product.slug %}"
-                class="btn"
-            >
-                View Product
-            </a>
+            </form>
 
         </div>
 
-    {% empty %}
+    </div>
 
-        <p>No products found.</p>
 
-    {% endfor %}
+    <!-- Products -->
+    <div class="card-grid">
+
+        {% for product in products %}
+
+            <div class="card">
+
+                <a
+                    href="{% url 'product_detail' slug=product.slug %}"
+                    class="product-card-link"
+                >
+
+                    <!-- Product Image -->
+                    <div class="product-image">
+
+                        {% if product.image %}
+
+                            <img
+                                src="{{ product.image.url }}"
+                                alt="{{ product.name }}"
+                            >
+
+                        {% else %}
+
+                            <div class="no-image">
+                                <span>📦</span>
+                                <p>No image available</p>
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Product Information -->
+                    <div class="product-content">
+
+                        <!-- Categories -->
+                        <div class="product-categories">
+
+                            {% for category in product.category.all %}
+
+                                <span class="category-tag">
+                                    {{ category.name }}
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <h2 class="product-name">
+                            {{ product.name }}
+                        </h2>
+
+
+                        <p class="product-description">
+                            {{ product.description|truncatewords:12 }}
+                        </p>
+
+
+                        <div class="product-meta">
+
+                            <strong class="product-price">
+                                ${{ product.price }}
+                            </strong>
+
+                            <span class="product-views">
+                                👁 {{ product.views_count }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+                <!-- Button -->
+                <a
+                    href="{% url 'product_detail' slug=product.slug %}"
+                    class="product-button"
+                >
+                    View Product
+                    <span>→</span>
+                </a>
+
+            </div>
+
+        {% empty %}
+
+            <div class="empty-products">
+
+                <div class="empty-icon">
+                    🔍
+                </div>
+
+                <h2>No products found</h2>
+
+                <p>
+                    Try changing your search or category filters.
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
 
 </div>
 
 {% endblock %}
+
