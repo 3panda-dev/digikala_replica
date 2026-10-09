@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Stores | DijiKala{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>🏪 فروشگاه‌های من</h2>
+    {% if stores %}
+        <a href="{% url 'add-store' %}" class="btn-create-small">
+            <span>+</span> ایجاد فروشگاه جدید
+        </a>
+    {% endif %}
+</div>
+
+{% if stores %}
+    <div class="card-grid">
+        {% for store in stores %}
+            <div class="card">
+                <h3>{{ store.name }}</h3>
+                <p>{{ store.description|truncatewords:15 }}</p>
+                <span>{{ store.created_at }}</span>
+                <a href="{% url 'store-detail' store.pk %}" class="btn">پنل مدیریت</a>
+                {% comment %}
+                    {% url 'store_detail' store.id %}
+                {% endcomment %}
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-store-container">
+        <a href="{% url 'add-store' %}" class="create-store-btn">
+            <span class="icon">+</span>
+            <span>ایجاد فروشگاه جدید</span>
+        </a>
+    </div>
+{% endif %}
+{% endblock %}

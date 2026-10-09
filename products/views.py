@@ -38,4 +38,3 @@ def product_detail(request, slug):
     })
 
 
-# Create your views here.

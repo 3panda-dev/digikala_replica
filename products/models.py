@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from store.models import *
 
 class Timestamp(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
@@ -15,6 +16,7 @@ class BaseModel(Timestamp):
         abstract = True
 
 class Category(models.Model):
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, unique=True, verbose_name='نام دسته بندی')
     slug = models.SlugField(max_length=100, unique=True, allow_unicode=True)
     is_active = models.BooleanField(default=True, verbose_name='فعال')

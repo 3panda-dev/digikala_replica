@@ -27,7 +27,7 @@ class CustomerProfile(models.Model):
     def __str__(self): 
         return self.full_name 
  
-class sellerprofile(models.Model): 
+class SellerProfile(models.Model): 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) 
     national_id = models.CharField(max_length=10, unique=True, verbose_name='کد ملی') 
     shaba_number = models.CharField(max_length=26, blank=True, null=True, verbose_name='شماره شبا') 

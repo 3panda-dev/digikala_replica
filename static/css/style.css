@@ -1536,3 +1536,136 @@ RESPONSIVE
 }
 
 }
+
+.empty-store-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center;     
+    width: 100%;
+    margin: 50px auto;       
+    text-align: center;
+}
+
+.create-store-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #1976d2; 
+    color: #ffffff;
+    font-size: 1.15rem;
+    font-weight: bold;
+    padding: 16px 36px;
+    border-radius: 12px;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(25, 118, 210, 0.35);
+    transition: all 0.25s ease-in-out;
+    cursor: pointer;
+}
+
+.create-store-btn:hover {
+    background-color: #1565c0; 
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(25, 118, 210, 0.45);
+}
+
+.create-store-btn .icon {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.btn-create-small {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #1976d2;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-create-small:hover {
+    background-color: #1565c0;
+    transform: translateY(-1px);
+}
+
+.auth-container {
+    max-width: 750px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 32px 40px;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    direction: rtl;
+}
+
+.auth-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 24px;
+    text-align: right;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    color: #444;
+    font-weight: 500;
+}
+
+.auth-form input[type="text"],
+.auth-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-family: inherit;
+}
+
+.auth-form input[type="text"]:focus,
+.auth-form textarea:focus {
+    border-color: #222;
+    box-shadow: 0 0 0 2px rgba(34, 34, 34, 0.1);
+}
+
+.auth-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+}
+
+.auth-form .errorlist {
+    color: #ef394e;
+    font-size: 0.85rem;
+    list-style: none;
+    padding: 0;
+    margin-top: 4px;
+}
