@@ -4,4 +4,4 @@ from .models import *
 class SellerAddStoreForm(forms.ModelForm):
     class Meta:
         model = Store
-        fields = ['name', 'description']
+        fields = ['business_type', 'name', 'description']

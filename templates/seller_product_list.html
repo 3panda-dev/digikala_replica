@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}مدیریت محصولات | DijiKala{% endblock %}
+
+{% block content %}
+<div class="seller-products-container">
+    <div class="page-header">
+        <h2>📦 لیست محصولات شما</h2>
+
+        <div class="header-actions" style="display: flex; gap: 12px; align-items: center;">
+            <!-- فرم جستجو -->
+            <form method="get" class="search-form" style="display: flex; gap: 6px;">
+                <input 
+                    type="text" 
+                    name="search" 
+                    value="{{ request.GET.search|default:'' }}" 
+                    placeholder="جستجوی نام محصول..."
+                    style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit; font-size: 14px;"
+                >
+                <button 
+                    type="submit" 
+                    style="padding: 6px 14px; background-color: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: 14px;"
+                >
+                    جستجو
+                </button>
+                {% if request.GET.search %}
+                    <a 
+                        href="{% url 'seller-product-list' %}" 
+                        style="padding: 6px 10px; background-color: #6c757d; color: white; border-radius: 6px; text-decoration: none; font-size: 13px; display: flex; align-items: center;"
+                        title="پاک کردن فیلتر"
+                    >
+                        ✕
+                    </a>
+                {% endif %}
+            </form>
+
+            <a href="{% url 'seller-add-product' %}" class="btn-create-small">
+                <span>+</span> افزودن محصول جدید
+            </a>
+        </div>
+    </div>
+
+    <div class="product-list-wrapper">
+        {% for product in seller_product_list %}
+            <div class="product-list-row">
+                <!-- ۱. عکس بندانگشتی محصول -->
+                <div class="product-thumb">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="{% static 'images/default_product.jpg' %}" alt="No image">
+                    {% endif %}
+                </div>
+
+                <!-- ۲. نام محصول -->
+                <div class="product-title">
+                    <h4>{{ product.name }}</h4>
+                </div>
+
+                <!-- ۳. توضیحات کوتاه -->
+                <div class="product-desc">
+                    <p>{{ product.description|truncatewords:8 }}</p>
+                </div>
+
+                <!-- ۴. قیمت -->
+                <div class="product-price">
+                    <span>${{ product.price }}</span>
+                </div>
+
+                <!-- ۵. دکمه ویرایش و حذف -->
+                <div class="product-action">
+                    <a href="{% url 'seller-update-product' product.pk %}" class="btn-edit">ویرایش</a>
+                    <a href="{% url 'delete-product' product.pk %}" class="btn-delete">حذف</a>
+                </div>
+            </div>
+        {% empty %}
+            <div class="empty-list">
+                {% if request.GET.search %}
+                    <p>هیچ محصولی با عنوان «{{ request.GET.search }}» پیدا نشد.</p>
+                    <div style="margin-top: 15px;">
+                        <a href="{% url 'seller-product-list' %}" class="btn-create-small">
+                            مشاهده همه محصولات
+                        </a>
+                    </div>
+                {% else %}
+                    <p>هنوز هیچ محصولی برای این فروشنده ثبت نشده است.</p>
+                    <div style="margin-top: 15px;">
+                        <a href="{% url 'seller-add-product' %}" class="btn-create-small">
+                            <span>+</span> ایجاد اولین محصول
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

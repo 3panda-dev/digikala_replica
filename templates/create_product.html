@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-container">
+    <h2>افزودن محصول جدید</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">ثبت محصول</button>
+    </form>
+</div>
+{% endblock %}
