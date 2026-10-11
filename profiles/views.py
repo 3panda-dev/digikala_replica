@@ -1,7 +1,11 @@
+from decimal import Decimal
 from django.urls import reverse, reverse_lazy
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import *
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, UpdateView
+
+
 class ProfileDetailView(DetailView):
     model = CustomerProfile
     queryset = CustomerProfile.objects.select_related('user')
@@ -9,11 +13,7 @@ class ProfileDetailView(DetailView):
     context_object_name = 'profile_detail'
 
 
-from decimal import Decimal
-from django.views.generic import UpdateView
-from django.shortcuts import get_object_or_404
-
-class IncreaseBalance(UpdateView):
+class IncreaseBalance(LoginRequiredMixin, UpdateView):
     model = CustomerProfile
     fields = ['wallet']
     template_name = 'increase_balance.html'

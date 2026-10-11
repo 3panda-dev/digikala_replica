@@ -4,37 +4,83 @@
 {% block title %}{{ store.name }} | DijiKala{% endblock %}
 
 {% block content %}
-<div class="store-header">
-    <h2>{{ store.name }}</h2>
-    <p>{{ store.description }}</p>
-
-    {% if user == store.owner.user %}
-        <a href="" class="btn">+ Add Product</a>
-    {% endif %}
-</div>
-
-<hr>
-
-<div class="card-grid">
-    {% for product in products %}
-        <div class="card">
-            {% if product.image %}
-                <img src="{{ product.image.url }}" alt="{{ product.name }}">
-            {% else %}
-                <img src="{% static 'images/default_product.jpg' %}" alt="No image">
-            {% endif %}
-            <h3>{{ product.name }}</h3>
-            <p>{{ product.description|truncatewords:12 }}</p>
-            <p><strong>${{ product.price }}</strong></p>
-
-            {% if user.is_authenticated %}
-                <a href="{% url 'add_to_cart' product.id %}" class="btn">Add to Cart</a>
-            {% else %}
-                <p><a href="{% url 'login' %}">Login to Buy</a></p>
-            {% endif %}
+<div class="products-page">
+    <div class="products-header">
+        <div>
+            <span class="products-eyebrow">STORE</span>
+            <h1>{{ store.name }}</h1>
+            <p>{{ store.description }}</p>
         </div>
-    {% empty %}
-        <p>No products in this store yet.</p>
-    {% endfor %}
+    </div>
+
+    <div class="products-toolbar">
+        <form method="GET" class="search-form">
+            <div class="search-box">
+                <span>🔍</span>
+                <input type="text" name="search" placeholder="Search this store..." value="{{ request.GET.search|default:'' }}">
+            </div>
+            {% if request.GET.sort %}
+                <input type="hidden" name="sort" value="{{ request.GET.sort }}">
+            {% endif %}
+            <button type="submit" class="search-button">Search</button>
+        </form>
+
+        <form method="GET" class="filter-form">
+            {% if request.GET.search %}
+                <input type="hidden" name="search" value="{{ request.GET.search }}">
+            {% endif %}
+            <label for="sort">Sort</label>
+            <select name="sort" id="sort" onchange="this.form.submit()">
+                <option value="newest" {% if request.GET.sort == 'newest' or not request.GET.sort %}selected{% endif %}>Newest</option>
+                <option value="oldest" {% if request.GET.sort == 'oldest' %}selected{% endif %}>Oldest</option>
+                <option value="most_viewed" {% if request.GET.sort == 'most_viewed' %}selected{% endif %}>Most viewed</option>
+                <option value="price_low" {% if request.GET.sort == 'price_low' %}selected{% endif %}>Price: low to high</option>
+                <option value="price_high" {% if request.GET.sort == 'price_high' %}selected{% endif %}>Price: high to low</option>
+            </select>
+        </form>
+    </div>
+
+    <div class="card-grid">
+        {% for product in products %}
+            <div class="card">
+                <a href="{% url 'product_detail' slug=product.slug %}" class="product-card-link">
+                    <div class="product-image">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                            <div class="no-image"><span>📦</span><p>No image available</p></div>
+                        {% endif %}
+                    </div>
+                    <div class="product-content">
+                        <div class="product-categories">
+                            {% for category in product.category.all %}
+                                <span class="category-tag">{{ category.name }}</span>
+                            {% endfor %}
+                        </div>
+                        <h2 class="product-name">{{ product.name }}</h2>
+                        <p class="product-description">{{ product.description|truncatewords:12 }}</p>
+                        <div class="product-meta">
+                            <strong class="product-price">{{ product.price }}</strong>
+                            <span class="product-views">👁 {{ product.views_count }}</span>
+                        </div>
+                    </div>
+                </a>
+                {% if user.is_authenticated %}
+                    <form action="{% url 'add_to_cart' product.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="product-button">Add to Cart →</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="product-button">Login to Buy →</a>
+                {% endif %}
+            </div>
+        {% empty %}
+            <div class="empty-products">
+                <div class="empty-icon">🔍</div>
+                <h2>No products found</h2>
+                <p>Try another search or check back later.</p>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

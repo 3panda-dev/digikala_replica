@@ -86,8 +86,13 @@
 
             <div class="grand-total">
                 <span>Grand Total</span>
-                <strong>${{cart_total}}</strong>
+                <strong>{{ cart_total }} تومان</strong>
             </div>
+
+            <form action="{% url 'checkout' %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="product-button">Checkout</button>
+            </form>
 
         </div>
     {% endif %}

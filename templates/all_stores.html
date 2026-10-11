@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}All Stores | DijiKala{% endblock %}
+
+{% block content %}
+<div class="products-page">
+    <div class="products-header">
+        <div>
+            <span class="products-eyebrow">DIJIKALA</span>
+            <h1>All Stores</h1>
+            <p>Choose a store to see its products.</p>
+        </div>
+    </div>
+
+    <div class="card-grid">
+        {% for store in stores %}
+            <div class="card">
+                <h2>{{ store.name }}</h2>
+                {% if store.business_type %}
+                    <p>{{ store.business_type.name }}</p>
+                {% endif %}
+                <p>{{ store.description|default:' '|truncatewords:18 }}</p>
+                <a href="{% url 'store-products' store.pk %}" class="btn">View Store</a>
+            </div>
+        {% empty %}
+            <p>No stores are available right now.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
