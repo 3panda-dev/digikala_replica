@@ -40,6 +40,7 @@
             {% for category in product.category.all %}
 
                 <span>📁 {{ category.name }}</span>
+                <span>store: {{category.store.name}}</span>
 
             {% endfor %}
 
@@ -68,14 +69,6 @@
                 {% csrf_token %}
                 <button type="submit" class="btn product-buy-btn">🛒 Add to Cart</button>
 
-
-            </form>
-            <a
-                href="{% url 'add_to_cart' product_id=product.id%}"
-                class="btn product-buy-btn"
-            >
-                🛒 Add to Cart
-            </a>
 
         {% else %}
 

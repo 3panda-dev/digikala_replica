@@ -3,7 +3,7 @@ from django.views.generic import ListView
 from .models import Product, Category
 
 def products(request):
-    products = Product.objects.all()
+    products = Product.objects.filter(status="published")
     categories = Category.objects.all()
 
     search = request.GET.get("search")

@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404, redirect
 
 @login_required
 def my_cart(request):
-    cart = Cart.objects.get(profile=request.user.customerprofile)
+    cart = Cart.objects.prefetch_related("items__product").get(profile=request.user.customerprofile)
     total = 0
     for item in cart.items.all():
         total += item.product.price * item.quantity
