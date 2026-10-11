@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}مدیریت محصولات | DijiKala{% endblock %}
+
+{% block content %}
+<div class="seller-products-container">
+    <div class="list-header">
+        <h2> لیست دسته بندی های شما</h2>
+    </div>
+
+    <div class="product-list-wrapper">
+        {% for category in seller_category_list %}
+            <div class="product-list-row">
+                <div class="product-title">
+                    <h4>{{ category.name }}</h4>
+                </div>
+                <div class="product-action">
+                    <a href="{% url 'delete-category' category.pk %}" class="btn-delete">حذف</a>
+                </div>
+            </div>
+        {% empty %}
+            <div class="empty-list">
+                <p>هنوز هیچ دسته بندیی برای این فروشگاه ثبت نشده است.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

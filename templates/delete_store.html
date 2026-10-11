@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <p>آیا از حذف فروشگاه «{{ object.name }}» مطمئن هستید؟</p>
+    <button type="submit" class="btn btn-danger">بله، حذف کن</button>
+</form>
+{% endblock %}

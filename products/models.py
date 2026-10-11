@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from store.models import *
+from django.utils.text import slugify
 
 class Timestamp(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
@@ -29,14 +30,15 @@ class Category(models.Model):
         return self.name
 
 class Product(BaseModel):
+    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='products')
     category = models.ManyToManyField(Category, related_name='products')
     name = models.CharField(max_length=100, verbose_name='نام محصول')
-    slug = models.SlugField(max_length=100, unique=True, allow_unicode=True)
+    slug = models.SlugField(max_length=100, unique=True, allow_unicode=True, blank=True)
     description = models.TextField(verbose_name='توضیحات')
     price = models.PositiveIntegerField()
     views_count = models.PositiveIntegerField(default=0, verbose_name='تعداد بازدید')
     stock = models.PositiveIntegerField(default=0, verbose_name='موجودی')
-    image = models.ImageField(upload_to='products-image/', blank=True, null=True, verbose_name='عکس پروفایل', default='media/products-image/default.jpg')
+    image = models.ImageField(upload_to='products-image/', blank=True, null=True, verbose_name='عکس پروفایل', default='products-image/default.jpg')
     
 
 
